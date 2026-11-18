@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>৩০,০০০ মিনিট পড়া</title>
+<style>
+:root{--bg:#0b1220;--card:#141c2f;--card2:#1b2640;--tx:#e8eefc;--mu:#8fa0c4;--acc:#22d3ee;--ok:#34d399;--warn:#fbbf24;--bad:#f87171;--gold:#fbbf24;--bd:#24304d}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.45}
+body{padding:calc(env(safe-area-inset-top) + 10px) 12px calc(84px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto}
+h1{font-size:18px;margin:4px 0 10px}
+h2{font-size:16px;margin:16px 0 8px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:12px}
+.mu{color:var(--mu);font-size:13px}
+.big{font-size:22px;font-weight:700}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sp{justify-content:space-between}
+button{font:inherit;color:var(--tx);background:var(--card2);border:1px solid var(--bd);border-radius:12px;padding:9px 14px;cursor:pointer}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.pri{background:var(--acc);color:#04202a;border-color:var(--acc);font-weight:700}
+button.ok{background:var(--ok);color:#03281c;border-color:var(--ok);font-weight:700}
+button.bad{background:var(--bad);color:#2a0606;border-color:var(--bad);font-weight:700}
+button.sm{padding:5px 10px;font-size:13px;border-radius:10px}
+.bar{height:10px;background:var(--card2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.bar.g i{background:var(--ok)}
+.seg{display:flex;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:3px;margin-bottom:12px}
+.seg button{flex:1;border:0;background:transparent;border-radius:9px;padding:8px 4px}
+.seg button.on{background:var(--acc);color:#04202a;font-weight:700}
+nav{position:fixed;left:0;right:0;bottom:0;background:#0f1729f2;border-top:1px solid var(--bd);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));backdrop-filter:blur(8px);z-index:5}
+nav button{flex:1;border:0;background:transparent;font-size:11px;padding:6px 2px;color:var(--mu);border-radius:10px}
+nav button b{display:block;font-size:19px;font-weight:400}
+nav button.on{color:var(--acc)}
+.slot{display:flex;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid var(--bd)}
+.slot:last-child{border-bottom:0}
+.slot .t{min-width:92px;font-size:13px;color:var(--mu)}
+.slot .d{flex:1;font-weight:600}
+.slot.done .d{color:var(--ok)}
+.chip{display:inline-block;padding:2px 9px;border-radius:99px;background:var(--card2);font-size:12px;color:var(--mu)}
+.clock{font-size:54px;font-weight:800;text-align:center;letter-spacing:2px;margin:6px 0;font-variant-numeric:tabular-nums}
+.timer.fin{border-color:var(--ok);box-shadow:0 0 0 2px #34d39944}
+.timer.fin .clock{color:var(--ok)}
+.warn{background:#3b2a05;border-color:#7a5a10;color:#fde7a8}
+.best{background:linear-gradient(135deg,#3a2c05,#1a1403);border-color:var(--gold)}
+.best b{color:var(--gold)}
+table{width:100%;border-collapse:collapse}
+td,th{padding:7px 4px;text-align:left;font-size:14px;border-bottom:1px solid var(--bd)}
+th{color:var(--mu);font-weight:500;font-size:12px}
+td.n,th.n{text-align:right}
+.chart{overflow-x:auto;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:8px 4px;margin-bottom:12px}
+.chart svg text{fill:var(--mu);font-size:9px;font-family:inherit}
+.chart svg .bar1{fill:var(--acc)}
+.chart svg .bar1.hl{fill:var(--gold)}
+.chart svg .bar1.fu{fill:var(--card2)}
+.chart svg .tg{fill:none;stroke:var(--mu);stroke-dasharray:3 3;stroke-width:1}
+.chart svg .gl{stroke:var(--bd);stroke-width:1}
+.chart svg .tl{stroke:var(--bad);stroke-dasharray:4 3;stroke-width:1.2}
+.chart svg text.v{fill:var(--tx);font-weight:700}
+.chart svg text.hv{fill:var(--gold);font-weight:700;font-size:10px}
+.cal{display:grid;grid-template-columns:34px repeat(7,1fr);gap:4px;align-items:stretch}
+.cal .wk{font-size:10px;color:var(--mu);display:flex;align-items:center}
+.cell{border-radius:9px;padding:4px 1px;text-align:center;font-size:10px;background:var(--card);border:1px solid var(--bd);min-height:44px;cursor:pointer}
+.cell b{display:block;font-size:12px}
+.cell.today{outline:2px solid var(--acc)}
+.cell.best{background:var(--gold);color:#2a1d00;border-color:var(--gold)}
+.cell.fu{opacity:.35}
+.cell.miss{background:#2a1414;border-color:#5a2424}
+.cell.empty{visibility:hidden}
+#modal{position:fixed;inset:0;background:#000b;z-index:20;display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:16px}
+#modal.on{display:flex}
+.mbox{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:18px;max-width:520px;width:100%;margin:auto}
+.mbox.bad{border:2px solid var(--bad)}
+.mbox h2{margin-top:0}
+.phrase{background:#0a1020;border:1px dashed var(--warn);border-radius:10px;padding:10px;margin:6px 0;font-weight:700;color:var(--warn);user-select:none;-webkit-user-select:none;word-break:break-word}
+input[type=text]{width:100%;font:inherit;color:var(--tx);background:#0a1020;border:1px solid var(--bd);border-radius:10px;padding:10px;margin-bottom:6px}
+input[type=text].good{border-color:var(--ok)}
+input[type=text].no{border-color:var(--bad)}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#e8eefc;color:#0b1220;padding:10px 16px;border-radius:12px;font-weight:600;display:none;z-index:30;max-width:90%;text-align:center}
+ul.l{padding-left:20px;margin:6px 0}
+ul.l li{margin:3px 0}
+</style>
+</head>
+<body>
+<div id="view"></div>
+<nav id="nav"></nav>
+<div id="modal"></div>
+<div id="toast"></div>
+
+<script>
+'use strict';
+const KEY='rt60_v1';
+const DAYS=60, TOTAL_MIN=30000, DAILY=500;
+const SEQ=[50,50,40,30,50,50,40,30,50,50,30,30];
+const SCHED=['06:00','07:00','08:20','09:10','09:50','10:50','13:00','13:50','14:30','15:30','17:20','18:00'];
+const TYPES=[50,40,30];
+const TOT={50:360,40:120,30:240};
+const LOCK_MS=3600000;
+const MONTHS=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+const WD=['রবিবার','সোমবার','মঙ্গলবার','বুধবার','বৃহস্পতিবার','শুক্রবার','শনিবার'];
+const START_UTC=Date.UTC(2026,10,18);
+const bn=s=>String(s).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
+const $=s=>document.querySelector(s);
+
+let WIPED=false;
+let S=load();
+function load(){
+  try{const j=JSON.parse(localStorage.getItem(KEY));if(j&&j.v===1)return j}catch(e){}
+  return {v:1,mode:'fixed',accepted:false,entries:[],timer:null,lastSeen:0,created:Date.now()};
+}
+function save(){
+  if(WIPED)return;
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('⚠ সেভ করা যায়নি, ফোনের স্টোরেজ দেখুন')}
+}
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+
+function trusted(){return Math.max(Date.now(),S.lastSeen||0)}
+function clockBack(){return Date.now()<(S.lastSeen||0)-120000}
+function dayNum(ms){const d=new Date(ms);return Math.floor((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-START_UTC)/864e5)+1}
+function todayN(){return dayNum(trusted())}
+function dateOf(n){return new Date(2026,10,18+n-1)}
+function dLabel(n){const d=dateOf(n);return bn(d.getDate())+' '+MONTHS[d.getMonth()]}
+function dFull(n){const d=dateOf(n);return WD[d.getDay()]+', '+bn(d.getDate())+' '+MONTHS[d.getMonth()]+' '+bn(d.getFullYear())}
+function fmtMS(ms){const t=Math.ceil(ms/1000);return bn(String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0'))}
+function addMin(h,m){const [a,b]=h.split(':').map(Number);const t=a*60+b+m;return String(Math.floor(t/60)%24).padStart(2,'0')+':'+String(t%60).padStart(2,'0')}
+function clockStr(ms){const d=new Date(ms);return bn(String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'))}
+
+/* ---------- derived data ---------- */
+let D;
+function derive(){
+  const slots=[];
+  for(let d=1;d<=DAYS;d++)SEQ.forEach((dur,i)=>slots.push({key:d+'-'+i,day:d,i,dur}));
+  const done=new Set(S.entries.filter(e=>e.key).map(e=>e.key));
+  const free=S.entries.filter(e=>!e.key&&TYPES.includes(e.dur)).sort((a,b)=>a.okAt-b.okAt);
+  for(const e of free){const s=slots.find(s=>s.dur===e.dur&&!done.has(s.key));if(s)done.add(s.key)}
+  const byDay=new Array(DAYS+2).fill(0);const cnt={50:0,40:0,30:0};let min=0,blocks=0;
+  for(const e of S.entries){
+    if(e.doneDay>=1&&e.doneDay<=DAYS)byDay[e.doneDay]+=e.dur;
+    min+=e.dur;
+    if(TYPES.includes(e.dur)){blocks++;cnt[e.dur]++}
+  }
+  let best=0,bestMin=0;
+  for(let d=1;d<=DAYS;d++)if(byDay[d]>bestMin){bestMin=byDay[d];best=d}
+  return {slots,done,byDay,cnt,min,blocks,best,bestMin};
+}
+
+/* ---------- timer ---------- */
+let wl=null;
+async function wake(){try{if('wakeLock' in navigator)wl=await navigator.wakeLock.request('screen')}catch(e){}}
+function startTimer(dur,key){
+  if(S.timer)return toast('আগে চলমান টাইমার শেষ বা বাতিল করুন');
+  if(key&&D.done.has(key))return toast('এই ব্লক আগেই শেষ');
+  S.timer={dur,key:key||null,endsAt:Date.now()+dur*60000,rem:dur*60000,run:true,fin:false};
+  save();wake();render();
+}
+function pauseT(){const T=S.timer;if(!T||T.fin)return;if(T.run){T.rem=Math.max(0,T.endsAt-Date.now());T.run=false}else{T.endsAt=Date.now()+T.rem;T.run=true;wake()}save();render()}
+function cancelT(){if(!S.timer)return;if(!confirm('টাইমার বাতিল করবেন? এই ব্লকের সময় গোনা হবে না।'))return;S.timer=null;save();render()}
+function okTimer(){
+  const T=S.timer;if(!T||!T.fin)return;
+  addEntry(T.dur,T.key,'timer');S.timer=null;save();render();toast('✅ OK! ১ ঘণ্টা পর লক হবে');
+}
+function manualOK(dur,key){
+  if(S.timer)return toast('আগে চলমান টাইমার শেষ বা বাতিল করুন');
+  if(!confirm('টাইমার ছাড়াই '+bn(dur)+' মিনিটের ব্লকে OK দেবেন? সৎভাবে পড়ে থাকলেই দিন।'))return;
+  addEntry(dur,key,'manual');save();render();toast('✅ OK! ১ ঘণ্টা পর লক হবে');
+}
+function addEntry(dur,key,how){
+  const t=trusted();
+  S.entries.push({id:t+'-'+Math.random().toString(36).slice(2,7),doneDay:dayNum(t),key:key||null,dur,okAt:t,how});
+}
+function undo(id){
+  const e=S.entries.find(x=>x.id===id);if(!e)return;
+  if(trusted()-e.okAt>=LOCK_MS)return toast('🔒 এটি লক হয়ে গেছে, আর বদলানো যাবে না');
+  if(!confirm('এই ব্লকের OK বাতিল করবেন?'))return;
+  S.entries=S.entries.filter(x=>x.id!==id);save();render();
+}
+function finishAlert(){
+  try{navigator.vibrate&&navigator.vibrate([300,150,300,150,600])}catch(e){}
+  try{
+    const c=new (window.AudioContext||window.webkitAudioContext)();
+    [0,.35,.7].forEach(t=>{const o=c.createOscillator(),g=c.createGain();o.frequency.value=880;o.connect(g);g.connect(c.destination);
+      g.gain.setValueAtTime(.25,c.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+.3);o.start(c.currentTime+t);o.stop(c.currentTime+t+.3)});
+  }catch(e){}
+  toast('⏰ সময় শেষ! এবার ✅ OK চাপুন');
+}
+
+/* ---------- UI helpers ---------- */
+let tab='today',gsel='day',showBack=false,lastDay=null,lastSave=0,lastRender=0;
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',2800)}
+function setTab(t){tab=t;render();window.scrollTo(0,0)}
+function pctOf(a,b){return b?Math.min(100,a/b*100):0}
+function lockLabel(e){
+  const left=e.okAt+LOCK_MS-trusted();
+  return left>0?`<button class="sm" onclick="undo('${e.id}')">↩ বাতিল (লক ${bn(Math.ceil(left/60000))} মি পরে)</button>`:`<span class="chip">🔒 লক</span>`;
+}
+
+/* ---------- views ---------- */
+function timerPanel(){
+  const T=S.timer;
+  if(!T)return `<div class="card"><div class="mu">কোনো টাইমার চলছে না। নিচের যেকোনো ব্লকে ▶ চাপুন।</div></div>`;
+  const rem=T.fin?0:(T.run?Math.max(0,T.endsAt-Date.now()):T.rem);
+  const p=100-pctOf(rem,T.dur*60000);
+  return `<div class="card timer ${T.fin?'fin':''}">
+    <div class="mu">${bn(T.dur)} মিনিটের ব্লক${T.key?' • নির্ধারিত ব্লক':''}${T.fin?' • সময় শেষ ✔':(T.run?' • চলছে':' • বিরতিতে')}</div>
+    <div class="clock" id="clk">${fmtMS(rem)}</div>
+    <div class="bar"><i id="tbar" style="width:${p}%"></i></div>
+    <div class="row" style="margin-top:12px">
+      ${T.fin?'':`<button class="pri" onclick="pauseT()">${T.run?'⏸ বিরতি':'▶ চালু'}</button>`}
+      <button class="ok" id="okb" onclick="okTimer()" ${T.fin?'':'disabled'}>✅ OK</button>
+      <button onclick="cancelT()">✖ বাতিল</button>
+    </div></div>`;
+}
+function slotRow(s){
+  const d=D.done.has(s.key);
+  const st=SCHED[s.i];
+  const run=S.timer&&S.timer.key===s.key;
+  return `<div class="slot ${d?'done':''}"><div class="t">${bn(st)}–${bn(addMin(st,s.dur))}</div>
+    <div class="d">${bn(s.dur)} মিনিট${s.day!==todayN()?` <span class="chip">${dLabel(s.day)}</span>`:''}</div>
+    ${d?'<span>✅</span>':run?'<span class="chip">চলছে</span>':`<button class="sm pri" onclick="startTimer(${s.dur},'${s.key}')">▶</button><button class="sm" onclick="manualOK(${s.dur},'${s.key}')">✍ OK</button>`}</div>`;
+}
+function vToday(){
+  const t=todayN(),inR=t>=1&&t<=DAYS;
+  const dm=inR?D.byDay[t]:0;
+  const left=Math.max(0,TOTAL_MIN-D.min);
+  const dl=inR?DAYS-t+1:0;
+  const need=dl?Math.ceil(left/dl):0;
+  let h='';
+  if(clockBack())h+=`<div class="card warn">⚠ ফোনের ঘড়ি পিছিয়ে দেওয়া হয়েছে মনে হচ্ছে। হিসাব আগের সর্বশেষ সময় ধরে চলবে। ঘড়ি ঠিক করুন।</div>`;
+  h+=`<div class="card"><div class="mu">${dFull(t)}</div>
+    <div class="row sp"><div class="big">দিন ${bn(Math.max(1,Math.min(t,DAYS)))} / ${bn(DAYS)}</div><div class="big">${bn(dm)}<span class="mu"> / ${bn(DAILY)} মি</span></div></div>
+    <div class="bar g" style="margin:8px 0"><i style="width:${pctOf(dm,DAILY)}%"></i></div>
+    <div class="mu">${inR?`লক্ষ্য ঠিক রাখতে আজ থেকে দিনে গড়ে <b style="color:var(--tx)">${bn(need)}</b> মিনিট লাগবে (বাকি ${bn(left)} মি, ${bn(dl)} দিন)`:(t<1?'৬০ দিন এখনো শুরু হয়নি':'৬০ দিন শেষ। বাকি ঘাটতি: '+bn(left)+' মি')}</div></div>`;
+  h+=timerPanel();
+  h+=`<div class="seg"><button class="${S.mode==='fixed'?'on':''}" onclick="setMode('fixed')">ধরন ক: নির্দিষ্ট ভাগ</button><button class="${S.mode==='flex'?'on':''}" onclick="setMode('flex')">ধরন খ: ফ্লেক্সিবল</button></div>`;
+  if(S.mode==='fixed'){
+    const todays=inR?D.slots.filter(s=>s.day===t):[];
+    h+=`<div class="card"><div class="row sp"><b>আজকের ১২টি ব্লক</b><span class="chip">${bn(todays.filter(s=>D.done.has(s.key)).length)}/১২</span></div>${todays.map(slotRow).join('')||'<div class="mu">আজ কোনো নির্ধারিত ব্লক নেই</div>'}</div>`;
+    const back=D.slots.filter(s=>s.day<Math.min(t,DAYS+1)&&!D.done.has(s.key));
+    const bc={50:0,40:0,30:0};back.forEach(s=>bc[s.dur]++);
+    h+=`<div class="card"><div class="row sp"><b>জমে থাকা (বাকি) ব্লক</b><span class="chip">${bn(back.length)}টি</span></div>
+      <div class="mu" style="margin:6px 0">৫০ মি: ${bn(bc[50])} • ৪০ মি: ${bn(bc[40])} • ৩০ মি: ${bn(bc[30])} (${bn(back.reduce((a,s)=>a+s.dur,0))} মিনিট)</div>
+      ${back.length?`<button class="sm" onclick="showBack=!showBack;render()">${showBack?'লুকান':'তালিকা দেখুন'}</button>`:'<div class="mu">কিছু জমেনি 🎉</div>'}
+      ${showBack?back.slice(0,40).map(slotRow).join('')+(back.length>40?`<div class="mu">… আরও ${bn(back.length-40)}টি</div>`:''):''}</div>`;
+  }else{
+    h+=`<div class="card"><b>ব্লকের ভাণ্ডার</b><div class="mu" style="margin-bottom:6px">যেকোনো দিন যেকোনো ধরনের ব্লক নিন। আগে করে ফেললে বাকিগুলো জমা থাকবে।</div>`+
+    TYPES.map(x=>{const r=Math.max(0,TOT[x]-D.cnt[x]);return `<div class="slot"><div class="d">${bn(x)} মিনিটের ব্লক</div><span class="chip">বাকি ${bn(r)}</span><button class="sm pri" ${r?'':'disabled'} onclick="startTimer(${x},null)">▶</button><button class="sm" ${r?'':'disabled'} onclick="manualOK(${x},null)">✍ OK</button></div>`}).join('')+`</div>`;
+  }
+  h+=`<div class="card"><b>পুষিয়ে নেওয়ার ছোট ব্লক</b><div class="mu" style="margin-bottom:8px">কোনো দিন মিনিট কম পড়লে ১ বা ২ মিনিটের ব্লকে মেটান। এগুলো শুধু মিনিটে গোনা হয়।</div>
+    <div class="row"><button onclick="startTimer(1,null)">▶ ১ মিনিট</button><button onclick="startTimer(2,null)">▶ ২ মিনিট</button><button class="sm" onclick="manualOK(1,null)">✍ ১</button><button class="sm" onclick="manualOK(2,null)">✍ ২</button></div></div>`;
+  const te=S.entries.filter(e=>e.doneDay===t).sort((a,b)=>b.okAt-a.okAt);
+  h+=`<div class="card"><b>আজ যা শেষ করেছেন</b>${te.length?te.map(e=>`<div class="slot"><div class="t">${clockStr(e.okAt)}</div><div class="d">${bn(e.dur)} মিনিট ${e.how==='manual'?'<span class="chip">হাতে</span>':''}</div>${lockLabel(e)}</div>`).join(''):'<div class="mu">এখনো কিছু নেই</div>'}</div>`;
+  return h;
+}
+function setMode(m){S.mode=m;save();render()}
+
+function vProgress(){
+  const t=todayN();
+  const left=Math.max(0,TOTAL_MIN-D.min);
+  const doneBlocks=D.blocks;
+  const remB=TYPES.reduce((a,x)=>a+Math.max(0,TOT[x]-D.cnt[x]),0);
+  let h=`<div class="card"><div class="mu">সামগ্রিক অগ্রগতি</div><div class="big">${bn(D.min)} <span class="mu">/ ${bn(TOTAL_MIN)} মিনিট</span></div>
+    <div class="bar g" style="margin:8px 0"><i style="width:${pctOf(D.min,TOTAL_MIN)}%"></i></div>
+    <div class="mu">${bn((pctOf(D.min,TOTAL_MIN)).toFixed(1))}% সম্পন্ন • বাকি ${bn(left)} মিনিট</div></div>`;
+  h+=`<div class="card"><b>ব্লকের হিসাব (মোট ${bn(720)}টি)</b>
+    <table><tr><th>ধরন</th><th class="n">মোট</th><th class="n">শেষ</th><th class="n">বাকি</th></tr>
+    ${TYPES.map(x=>`<tr><td>${bn(x)} মিনিট</td><td class="n">${bn(TOT[x])}</td><td class="n" style="color:var(--ok)">${bn(D.cnt[x])}</td><td class="n">${bn(Math.max(0,TOT[x]-D.cnt[x]))}</td></tr>`).join('')}
+    <tr><td><b>মোট</b></td><td class="n"><b>${bn(720)}</b></td><td class="n" style="color:var(--ok)"><b>${bn(doneBlocks)}</b></td><td class="n"><b>${bn(remB)}</b></td></tr></table>
+    ${TYPES.map(x=>`<div class="mu" style="margin-top:8px">${bn(x)} মি • ${bn(Math.round(pctOf(D.cnt[x],TOT[x])))}%</div><div class="bar"><i style="width:${pctOf(D.cnt[x],TOT[x])}%"></i></div>`).join('')}</div>`;
+  const extra=S.entries.filter(e=>!TYPES.includes(e.dur));
+  h+=`<div class="card"><div class="row sp"><span>১/২ মিনিটের ছোট ব্লক</span><b>${bn(extra.length)}টি • ${bn(extra.reduce((a,e)=>a+e.dur,0))} মি</b></div></div>`;
+  if(D.best)h+=`<div class="card best"><div class="mu">🏆 সবচেয়ে বেশি পড়া দিন</div><div class="big"><b>${dFull(D.best)}</b></div><div><b>${bn(D.bestMin)} মিনিট</b> (${bn(Math.floor(D.bestMin/60))} ঘ ${bn(D.bestMin%60)} মি)</div></div>`;
+  else h+=`<div class="card best"><div class="mu">🏆 সবচেয়ে বেশি পড়া দিন</div><div class="mu">প্রথম ব্লক শেষ করলেই এখানে দেখা যাবে</div></div>`;
+  const wk=Math.min(9,Math.max(1,Math.ceil(Math.max(1,t)/7)));
+  const w0=(wk-1)*7+1,w1=Math.min(DAYS,wk*7);let wm=0;for(let d=w0;d<=w1;d++)wm+=D.byDay[d];
+  h+=`<div class="card"><div class="row sp"><span>এই সপ্তাহ (সপ্তাহ ${bn(wk)})</span><b>${bn(wm)} / ${bn((w1-w0+1)*DAILY)} মি</b></div>
+    <div class="bar" style="margin-top:6px"><i style="width:${pctOf(wm,(w1-w0+1)*DAILY)}%"></i></div></div>`;
+  h+=`<div class="mu" style="padding:0 4px">সময়কাল: ১৮ নভেম্বর ২০২৬ – ১৬ জানুয়ারি ২০২৭ (৬০ দিন)</div>`;
+  return h;
+}
+
+/* ---------- charts ---------- */
+function barChart(items,o){
+  const padL=36,padT=20,padB=o.two?34:24,H=o.H||210,bw=o.bw,gap=o.gap;
+  const W=padL+items.length*(bw+gap)+8,ch=H-padT-padB;
+  const y=v=>padT+ch-(v/o.max)*ch;
+  let s=`<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  [0,.5,1].forEach(f=>{const v=o.max*f;s+=`<line class="gl" x1="${padL-4}" x2="${W}" y1="${y(v)}" y2="${y(v)}"/><text x="${padL-6}" y="${y(v)+3}" text-anchor="end">${bn(Math.round(v))}</text>`});
+  if(o.line)s+=`<line class="tl" x1="${padL-4}" x2="${W}" y1="${y(o.line)}" y2="${y(o.line)}"/><text x="${W-4}" y="${y(o.line)-3}" text-anchor="end" style="fill:var(--bad)">লক্ষ্য ${bn(o.line)}</text>`;
+  items.forEach((it,i)=>{
+    const x=padL+i*(bw+gap);
+    if(it.tgt)s+=`<rect class="tg" x="${x}" y="${y(it.tgt)}" width="${bw}" height="${ch+padT-y(it.tgt)}" rx="3"/>`;
+    const hh=Math.max(it.val>0?2:0,ch+padT-y(it.val));
+    s+=`<rect class="bar1 ${it.hl?'hl':''} ${it.fu?'fu':''}" x="${x}" y="${padT+ch-hh}" width="${bw}" height="${hh}" rx="3"/>`;
+    if(it.show&&it.val>0)s+=`<text class="${it.hl?'hv':'v'}" x="${x+bw/2}" y="${padT+ch-hh-4}" text-anchor="middle">${it.hl?'🏆':''}${bn(it.val)}</text>`;
+    s+=`<text x="${x+bw/2}" y="${H-(o.two?20:8)}" text-anchor="middle"${it.hl?' style="fill:var(--gold);font-weight:700"':''}>${it.lab}</text>`;
+    if(o.two&&it.lab2)s+=`<text x="${x+bw/2}" y="${H-6}" text-anchor="middle" style="font-size:8px">${it.lab2}</text>`;
+  });
+  return s+'</svg>';
+}
+function vGraph(){
+  const t=todayN();let ch='',note='';
+  if(gsel==='day'){
+    const items=[];
+    for(let d=1;d<=DAYS;d++){const dt=dateOf(d);items.push({lab:bn(dt.getDate()),lab2:(d===1||dt.getDate()===1)?MONTHS[dt.getMonth()]:'',val:D.byDay[d],hl:d===D.best,fu:d>t,show:d===D.best||d===t})}
+    const mx=Math.max(600,Math.ceil(D.bestMin*1.1/100)*100);
+    ch=barChart(items,{bw:14,gap:5,max:mx,line:DAILY,two:true});
+    note='প্রতিটি দিনের মোট মিনিট। সোনালি = সবচেয়ে বেশি পড়া দিন। লাল রেখা = দৈনিক লক্ষ্য।';
+  }else if(gsel==='week'){
+    const items=[];
+    for(let k=1;k<=9;k++){const a=(k-1)*7+1,b=Math.min(DAYS,k*7);let v=0;for(let d=a;d<=b;d++)v+=D.byDay[d];items.push({lab:'স'+bn(k),val:v,tgt:(b-a+1)*DAILY,show:true,fu:a>t})}
+    let bi=-1,bv=0;items.forEach((x,i)=>{if(x.val>bv){bv=x.val;bi=i}});if(bi>=0)items[bi].hl=true;
+    ch=barChart(items,{bw:26,gap:10,max:3500});
+    note='প্রতি সপ্তাহের মোট মিনিট। ড্যাশ-বক্স = সপ্তাহের লক্ষ্য (৩৫০০; শেষ সপ্তাহ ২০০০)।';
+  }else{
+    const g={};
+    for(let d=1;d<=DAYS;d++){const dt=dateOf(d),k=dt.getFullYear()*12+dt.getMonth();g[k]=g[k]||{lab:MONTHS[dt.getMonth()],val:0,tgt:0,first:d};g[k].val+=D.byDay[d];g[k].tgt+=DAILY}
+    const items=Object.keys(g).sort((a,b)=>a-b).map(k=>({lab:g[k].lab,val:g[k].val,tgt:g[k].tgt,show:true,fu:g[k].first>t}));
+    let bi=-1,bv=0;items.forEach((x,i)=>{if(x.val>bv){bv=x.val;bi=i}});if(bi>=0)items[bi].hl=true;
+    ch=barChart(items,{bw:70,gap:36,max:16000});
+    note='মাসিক মোট মিনিট। লক্ষ্য: নভেম্বর ৬৫০০ (১৩ দিন), ডিসেম্বর ১৫৫০০, জানুয়ারি ৮০০০ (১৬ দিন)।';
+  }
+  let h=`<div class="seg">${[['day','দিন'],['week','সপ্তাহ'],['month','মাস']].map(a=>`<button class="${gsel===a[0]?'on':''}" onclick="gsel='${a[0]}';render()">${a[1]}</button>`).join('')}</div>
+   <div class="chart" id="chartbox">${ch}</div><div class="mu" style="padding:0 4px">${note}</div>`;
+  if(D.best)h+=`<div class="card best" style="margin-top:12px"><div class="mu">🏆 সেরা দিন</div><div><b>${dFull(D.best)} — ${bn(D.bestMin)} মিনিট</b></div></div>`;
+  return h;
+}
+function vCal(){
+  const t=todayN();
+  let h=`<div class="card"><b>৬০ দিনের ক্যালেন্ডার</b><div class="mu" style="margin:4px 0 10px">প্রতি ঘরে তারিখ ও মিনিট। 🏆 সোনালি = সেরা দিন, নীল বর্ডার = আজ, লালচে = ০ মিনিটের অতীত দিন।</div><div class="cal">`;
+  for(let w=0;w<9;w++){
+    h+=`<div class="wk">স${bn(w+1)}</div>`;
+    for(let c=0;c<7;c++){
+      const d=w*7+c+1;
+      if(d>DAYS){h+='<div class="cell empty"></div>';continue}
+      const m=D.byDay[d],dt=dateOf(d);
+      const cls=['cell'];if(d===t)cls.push('today');if(d===D.best)cls.push('best');if(d>t)cls.push('fu');if(d<t&&m===0)cls.push('miss');
+      const bg=(d!==D.best&&m>0)?`style="background:rgba(34,211,238,${Math.min(.75,.12+m/DAILY*.6)})"`:'';
+      h+=`<div class="${cls.join(' ')}" ${bg} onclick="toast('${dLabel(d).replace(/'/g,'')} • ${bn(m)} মিনিট')">${d===D.best?'🏆':''}<b>${bn(dt.getDate())}</b>${bn(m)}</div>`;
+    }
+  }
+  return h+'</div></div>';
+}
+function vSet(){
+  return `<div class="card"><b>ডেটা ও ব্যাকআপ</b><div class="mu" style="margin:6px 0">সব তথ্য শুধু এই ফোনের লোকাল স্টোরেজে আছে, ইন্টারনেটে কিছু যায় না। অ্যাপ আনইন্সটল বা ব্রাউজারের ডেটা মুছলে সব হারাবে, তাই মাঝেমধ্যে ব্যাকআপ নিন।</div>
+    <div class="row"><button onclick="exportData()">⬇ ব্যাকআপ নিন</button><button onclick="$('#imp').click()">⬆ ব্যাকআপ ফেরত আনুন</button></div>
+    <input id="imp" type="file" accept=".json,application/json" style="display:none" onchange="importData(this)"></div>
+  <div class="card"><b>অ্যাপের শর্ত</b><ul class="l mu">${RULES.map(r=>`<li>${r}</li>`).join('')}</ul></div>
+  <div class="card" id="installcard" style="display:none"><b>ফোনে ইন্সটল</b><div style="margin-top:8px"><button class="pri" onclick="doInstall()">📲 হোম স্ক্রিনে ইন্সটল করুন</button></div></div>
+  <div class="card" style="border-color:var(--bad)"><b style="color:var(--bad)">⛔ ডেটা মুছুন / অ্যাপ সরান</b>
+    <div class="mu" style="margin:6px 0">অ্যাপ আনইন্সটল করার আগে সব ডেটা মোছার এই কঠিন ধাপ পার হতে হবে। ধাপ শেষ হলে তবেই আনইন্সটলের নির্দেশনা দেখাবে।</div>
+    <button class="bad" onclick="delStep1()">ডেটা মুছতে চাই</button></div>`;
+}
+const RULES=[
+ 'প্রতিদিন রাত ১২:০০ থেকে নতুন দিন শুরু, পরের রাত ১২:০০ পর্যন্ত চলে।',
+ 'ব্লক শেষ হলে ✅ OK দিতে হবে। OK দেওয়ার ১ ঘণ্টা পর ব্লক লক হয়ে যায়, আর বদলানো বা বাতিল করা যায় না।',
+ 'ফোনের ঘড়ি পিছিয়ে দিলে অ্যাপ ধরে ফেলে সতর্ক করবে এবং আগের সর্বশেষ সময় ধরে হিসাব চালাবে।',
+ 'সব ডেটা কেবল এই ফোনের লোকাল স্টোরেজে থাকে।',
+ 'ডেটা মুছতে বা অ্যাপ সরাতে হলে কঠিন নিশ্চিতকরণ বাক্য নিজে টাইপ করতে হবে (কপি-পেস্ট চলবে না)।',
+ 'কম পড়লে ঘাটতি জমে থাকে, ১/২ মিনিটের ব্লক বা পরের দিনগুলোতে পুষিয়ে নিতে হবে।'
+];
+
+/* ---------- delete flow ---------- */
+function modal(html,bad){const m=$('#modal');m.innerHTML=`<div class="mbox ${bad?'bad':''}">${html}</div>`;m.classList.add('on')}
+function closeModal(){$('#modal').classList.remove('on');$('#modal').innerHTML=''}
+function delStep1(){
+  modal(`<h2 style="color:var(--bad)">⛔ কঠিন সতর্কতা</h2>
+   <p>আপনি সব ডেটা স্থায়ীভাবে মুছতে যাচ্ছেন। এটি <b>কোনোভাবেই ফেরত আনা যাবে না</b>।</p>
+   <ul class="l"><li>৬০ দিনের সব ব্লক, টাইমার ও OK মুছে যাবে</li><li>সব গ্রাফ, সেরা দিনের রেকর্ড ও হিসাব শূন্য হবে</li><li>লকড (🔒) ব্লকও মুছে যাবে</li></ul>
+   <p class="mu">ব্যাকআপ না নিয়ে থাকলে আগে সেটিংসে গিয়ে ব্যাকআপ নিন।</p>
+   <div class="row"><button id="n1" disabled>এগিয়ে যান (৮)</button><button onclick="closeModal()">না, ফিরে যাই</button></div>`,true);
+  let c=8;const b=$('#n1');
+  const iv=setInterval(()=>{c--;if(!$('#n1')){clearInterval(iv);return}if(c<=0){clearInterval(iv);b.disabled=false;b.textContent='এগিয়ে যান →';b.className='bad';b.onclick=delStep2}else b.textContent='এগিয়ে যান ('+bn(c)+')'},1000);
+}
+function delStep2(){
+  const code='DEL-'+Math.random().toString(36).slice(2,8).toUpperCase();
+  const P=['আমি আমার ৩০০০০ মিনিটের সব অগ্রগতি মুছে ফেলছি','এই কাজ আর ফিরিয়ে আনা যাবে না',code];
+  modal(`<h2 style="color:var(--bad)">নিশ্চিত করতে নিচের তিনটি লাইন হুবহু টাইপ করুন</h2>
+   <div class="mu">কপি-পেস্ট বন্ধ। প্রতিটি লাইন উপরের বাক্সের সঙ্গে মিলতে হবে।</div>
+   ${P.map((p,i)=>`<div class="phrase">${p}</div><input type="text" id="p${i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="এখানে টাইপ করুন">`).join('')}
+   <div class="row" style="margin-top:8px"><button class="bad" id="fin" disabled>সব মুছে ফেলুন</button><button onclick="closeModal()">বাতিল</button></div>`,true);
+  const chk=()=>{let all=true;P.forEach((p,i)=>{const el=$('#p'+i),ok=el.value.trim()===p;el.className=ok?'good':(el.value?'no':'');if(!ok)all=false});$('#fin').disabled=!all};
+  P.forEach((p,i)=>{const el=$('#p'+i);el.addEventListener('input',chk);['paste','drop','copy','cut','contextmenu'].forEach(ev=>el.addEventListener(ev,e=>e.preventDefault()))});
+  $('#fin').onclick=()=>{if(confirm('শেষবারের মতো: সত্যিই সব মুছে ফেলবেন?'))wipe()};
+}
+async function wipe(){
+  WIPED=true;
+  try{localStorage.clear()}catch(e){}
+  try{const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)))}catch(e){}
+  try{const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()))}catch(e){}
+  modal(`<h2 style="color:var(--ok)">✅ সব ডেটা মুছে গেছে</h2>
+   <p>এখন অ্যাপ সরাতে চাইলে:</p>
+   <ul class="l"><li>হোম স্ক্রিনে অ্যাপের আইকন চেপে ধরুন → <b>Uninstall / Remove</b></li><li>অথবা ফোনের <b>Settings → Apps → এই অ্যাপ → Uninstall</b></li></ul>
+   <p class="mu">নতুন করে শুরু করতে চাইলে অ্যাপটি বন্ধ করে আবার খুলুন।</p>`);
+}
+function exportData(){
+  const blob=new Blob([JSON.stringify(S)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='reading-backup-'+dayNum(trusted())+'.json';a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+function importData(inp){
+  const f=inp.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{try{const j=JSON.parse(r.result);if(!j||j.v!==1||!Array.isArray(j.entries))throw 0;if(!confirm('বর্তমান ডেটা বদলে ব্যাকআপ বসাবেন?'))return;S=j;save();render();toast('ব্যাকআপ ফেরত এসেছে')}catch(e){toast('ফাইলটি সঠিক ব্যাকআপ নয়')}};
+  r.readAsText(f);
+}
+
+/* ---------- first-run terms ---------- */
+function terms(){
+  modal(`<h2>📜 শর্তসমূহ</h2><ul class="l">${RULES.map(r=>`<li>${r}</li>`).join('')}</ul>
+   <label style="display:flex;gap:8px;align-items:center;margin:12px 0"><input type="checkbox" id="agree"> আমি সব শর্ত মেনে নিলাম</label>
+   <button class="pri" id="go" disabled>শুরু করি</button>`);
+  $('#agree').onchange=e=>$('#go').disabled=!e.target.checked;
+  $('#go').onclick=()=>{S.accepted=true;save();closeModal();render()};
+}
+
+/* ---------- render / tick ---------- */
+function render(){
+  if(WIPED)return;
+  D=derive();lastRender=Date.now();
+  const v=$('#view');
+  v.innerHTML=({today:vToday,progress:vProgress,graph:vGraph,cal:vCal,set:vSet})[tab]();
+  $('#nav').innerHTML=[['today','⏱','আজ'],['progress','📊','অগ্রগতি'],['graph','📈','গ্রাফ'],['cal','🗓','ক্যালেন্ডার'],['set','⚙','সেটিংস']].map(a=>`<button class="${tab===a[0]?'on':''}" onclick="setTab('${a[0]}')"><b>${a[1]}</b>${a[2]}</button>`).join('');
+  if(tab==='graph'&&gsel==='day'){const b=$('#chartbox');if(b){const n=Math.max(0,Math.min(todayN(),DAYS)-6);b.scrollLeft=n*19}}
+  const ic=$('#installcard');if(ic&&deferred)ic.style.display='block';
+}
+function tick(){
+  if(WIPED)return;
+  const dn=Date.now();if(dn>(S.lastSeen||0))S.lastSeen=dn;
+  const T=S.timer;
+  if(T&&T.run&&dn>=T.endsAt){T.run=false;T.rem=0;T.fin=true;save();finishAlert();render();return}
+  if(T&&tab==='today'){
+    const rem=T.fin?0:(T.run?Math.max(0,T.endsAt-dn):T.rem);
+    const c=$('#clk');if(c)c.textContent=fmtMS(rem);
+    const b=$('#tbar');if(b)b.style.width=(100-pctOf(rem,T.dur*60000))+'%';
+  }
+  if(dn-lastSave>10000){save();lastSave=dn}
+  const n=todayN();if(lastDay!==null&&n!==lastDay){lastDay=n;render()}else lastDay=n;
+  if(dn-lastRender>30000&&!document.hidden)render();
+}
+let deferred=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;const ic=$('#installcard');if(ic)ic.style.display='block'});
+function doInstall(){if(deferred){deferred.prompt();deferred=null}}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){if(S.timer&&S.timer.run)wake();tick();render()}});
+window.addEventListener('pagehide',()=>save());
+if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0)navigator.serviceWorker.register('sw.js').catch(()=>{});
+render();
+if(!S.accepted)terms();
+setInterval(tick,250);
+</script>
+</body>
+</html>
